@@ -40,11 +40,14 @@ RUN version="$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")" \
 # Flashlight install and dump SQL
 # --------------------------------
 FROM alpine-base-prestashop AS build-and-dump
-ARG PS_VERSION=1.7.8.11
-ARG PHP_VERSION=-7.4-fpm-alpine
+ARG PS_VERSION
+ARG PHP_VERSION
 ARG GIT_SHA
 ARG PS_FOLDER=/var/www/html
 ARG ZIP_SOURCE
+
+## Copy PrestaShop files from the local directory
+#COPY ./PrestaShop /var/www/html
 
 # Install unzip
 RUN apk add --no-cache unzip
@@ -126,13 +129,6 @@ COPY --from=build-and-dump \
 
 # The new default runner
 COPY ./assets/run.sh /run.sh
-
-# Dockerfile example
-COPY php.ini /usr/local/etc/php/php.ini
-
-# Restart PHP-FPM to apply changes
-RUN service php-fpm restart
-
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=10 --start-period=10s \
   CMD curl -Isf http://localhost:80/admin-dev/robots.txt || exit 1

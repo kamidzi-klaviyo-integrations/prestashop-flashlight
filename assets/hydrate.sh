@@ -6,6 +6,7 @@ PS_FOLDER=${PS_FOLDER:?missing PS_FOLDER}
 PS_CACHE_DIR="${PS_FOLDER}/var/cache"
 PS_LOGS_DIR="${PS_FOLDER}/var/logs"
 DUMP_FILE=/dump.sql
+echo "PS_FOLDER is set to: $PS_FOLDER"
 
 export PS_DOMAIN="localhost:80" \
   DB_SERVER=127.0.0.1 \
@@ -80,7 +81,7 @@ echo "✅ MySQL dump performed"
 # 9. Cache clear
 if [ -d "./bin/console" ]; then
   php -d memory_limit=-1 bin/console cache:clear;
-else 
+else
   # PrestaShop 1.6 only
   rm -rf "$PS_FOLDER/cache/*";
 fi

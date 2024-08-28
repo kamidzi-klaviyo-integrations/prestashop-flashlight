@@ -50,7 +50,7 @@ mkdir -p /var/log/php /var/run/php /var/run/nginx
 adduser --group nginx
 adduser --system nginx
 chown nginx:nginx /var/run/nginx
-chown www-data:www-data /var/log/php /var/run/php
+chown -R www-data:www-data /var/log/php /var/run/php /var/www/html/var/cache/dev .
 
 # Compute the short version (8.1.27 becomes 8.1)
 PHP_SHORT_VERSION=$(echo "$PHP_VERSION" | cut -d '.' -f1-2)

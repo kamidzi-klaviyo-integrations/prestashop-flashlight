@@ -2,7 +2,7 @@
 set -eu
 
 export BLACKFIRE_ENABLED="${BLACKFIRE_ENABLED:-false}"
-export DEBUG_MODE="${DEBUG_MODE:-false}"
+export DEBUG_MODE="${DEBUG_MODE:-true}"
 export DRY_RUN="${DRY_RUN:-false}"
 export DUMP_ON_RESTART="${DUMP_ON_RESTART:-false}"
 export INIT_ON_RESTART="${INIT_ON_RESTART:-false}"
@@ -19,7 +19,7 @@ export POST_SCRIPTS_ON_RESTART="${POST_SCRIPTS_ON_RESTART:-false}"
 export POST_SCRIPTS_USER="${POST_SCRIPTS_USER:-www-data}"
 export PS_PROTOCOL="${PS_PROTOCOL:-http}"
 export SSL_REDIRECT="${SSL_REDIRECT:-false}"
-export XDEBUG_ENABLED="${XDEBUG_ENABLED:-false}"
+export XDEBUG_ENABLED="${XDEBUG_ENABLED:-true}"
 
 INIT_LOCK=/tmp/flashlight-init.lock
 DUMP_LOCK=/tmp/flashlight-dump.lock
