@@ -4,7 +4,7 @@ echo Adding Webservice Key and User
 
 # assumes only 1 webservice user... no prob
 mysql -u prestashop -pprestashop prestashop <<EoF
-INSERT IGNORE INTO prestashop.ps_webservice_account (\`key\`, description, class_name, is_module, module_name, active) VALUES ('KS8G6TKA2RNJSF7N1UT6LRL7TAYCFGVI', '', 'WebserviceRequest', 0, null, 1);
+REPLACE INTO prestashop.ps_webservice_account (id_webservice_account, \`key\`, description, class_name, is_module, module_name, active) VALUES (1, 'KS8G6TKA2RNJSF7N1UT6LRL7TAYCFGVI', '', 'WebserviceRequest', 0, null, 1);
 INSERT IGNORE INTO prestashop.ps_webservice_account_shop (id_webservice_account, id_shop) VALUES (1, 1);
 EoF
 
