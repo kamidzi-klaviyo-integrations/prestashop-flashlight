@@ -1,16 +1,17 @@
 #!/bin/bash
-#
+hash -r
+set -eux
 echo Adding Webservice Key and User
 
 # assumes only 1 webservice user... no prob
-mysql -u prestashop -pprestashop prestashop <<EoF
+mysql -u "$MYSQL_USER" --password="$MYSQL_PASSWORD" --host="$MYSQL_HOST" "$MYSQL_DATABASE" <<EoF
 REPLACE INTO prestashop.ps_webservice_account (id_webservice_account, \`key\`, description, class_name, is_module, module_name, active) VALUES (1, 'KS8G6TKA2RNJSF7N1UT6LRL7TAYCFGVI', '', 'WebserviceRequest', 0, null, 1);
 INSERT IGNORE INTO prestashop.ps_webservice_account_shop (id_webservice_account, id_shop) VALUES (1, 1);
 EoF
 
 # insert the permissions
 echo Adding ALL permsissions
-mysql -u prestashop -pprestashop prestashop <<EoF
+mysql -u "$MYSQL_USER" --password="$MYSQL_PASSWORD" --host="$MYSQL_HOST" "$MYSQL_DATABASE" <<EoF
 INSERT IGNORE INTO prestashop.ps_webservice_permission (resource, method, id_webservice_account) VALUES ('addresses', 'GET', 1);
 INSERT IGNORE INTO prestashop.ps_webservice_permission (resource, method, id_webservice_account) VALUES ('addresses', 'POST', 1);
 INSERT IGNORE INTO prestashop.ps_webservice_permission (resource, method, id_webservice_account) VALUES ('addresses', 'PUT', 1);

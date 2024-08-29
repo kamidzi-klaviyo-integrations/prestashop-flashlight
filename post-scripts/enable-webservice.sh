@@ -1,8 +1,9 @@
 #!/bin/bash
-#
-set -x
-echo Enabling Webservice
+hash -r
+set -eux
+echo Enabling Webservice and Enabling CGI mode
 
-mysql -u prestashop -pprestashop prestashop <<EoF
+mysql -u "$MYSQL_USER" --password="$MYSQL_PASSWORD" --host="$MYSQL_HOST" "$MYSQL_DATABASE" <<EoF
 INSERT INTO ps_configuration (name, value, date_add, date_upd) VALUES ('PS_WEBSERVICE', 1, NOW(), NOW())
+INSERT INTO ps_configuration (name, value, date_add, date_upd) VALUES ('PS_WEBSERVICE_CGI_HOST', 1, NOW(), NOW())
 EoF
