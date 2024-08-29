@@ -22,6 +22,7 @@ services:
         source: ./modules/klaviyopsautomation
         target: /var/www/html/modules/klaviyopsautomation
       - ./post-scripts:/tmp/post-scripts
+      - ./docker:/config
     ports:
       - 8000:80
 
