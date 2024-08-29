@@ -27,7 +27,7 @@ if [ -d "$KLAVIYO_INSTALL_MODULES_DIR" ]; then
     for file in "$KLAVIYO_INSTALL_MODULES_DIR"/*.zip; do
       module=$(unzip -l "$file" | awk 'NR==4{print $4}' | sed 's/\/$//' | tr "-" "\n" | head -n 1)
       echo "--> Unzipping and installing $module from $file..."
-      unzip -qq "$file" -d /var/www/html/modules
+      yes | unzip -qq "$file" -d /var/www/html/modules
       if [ "$ON_INSTALL_MODULES_FAILURE" = "continue" ]; then
         (php -d memory_limit=-1 bin/console prestashop:module --no-interaction install "$module") || { echo "x module installation failed. Skipping."; }
       else
