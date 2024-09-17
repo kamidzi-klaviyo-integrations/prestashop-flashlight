@@ -27,7 +27,7 @@ services:
       - 8000:80
 
   mysql:
-    image: mariadb:lts
+    image: mariadb
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect"]
       interval: 10s
