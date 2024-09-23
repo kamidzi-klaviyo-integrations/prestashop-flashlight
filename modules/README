@@ -4,3 +4,6 @@ or init-scripts, make sure to edit the docker-compose.yml ENV and add
 
 POST_SCRIPTS_ON_RESTART=true
 INIT_SCRIPTS_ON_RESTART=true
+
+Alternatively, run
+`docker compose up --force-recreate`
