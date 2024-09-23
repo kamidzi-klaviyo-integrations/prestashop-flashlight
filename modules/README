@@ -1,0 +1,6 @@
+Place the module zips in this directory and they will be automagically
+installed on container build. If you need to re-run the post-scripts
+or init-scripts, make sure to edit the docker-compose.yml ENV and add
+
+POST_SCRIPTS_ON_RESTART=true
+INIT_SCRIPTS_ON_RESTART=true
