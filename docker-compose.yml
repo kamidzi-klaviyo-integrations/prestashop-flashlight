@@ -11,7 +11,7 @@ services:
       - INIT_SCRIPTS_USER=root
       - KLAVIYO_INSTALL_MODULES_DIR=/ps-modules
       - POST_SCRIPTS_DIR=/tmp/post-scripts
-      - POST_SCRIPTS_ON_RESTART=true
+        #   - POST_SCRIPTS_ON_RESTART=true
       - WEBSERVICE_KEYS_DIR=/webservice-keys
       - XDEBUG_ENABLED=true
     volumes:
@@ -22,6 +22,7 @@ services:
         source: ./modules/klaviyopsautomation
         target: /var/www/html/modules/klaviyopsautomation
       - ./post-scripts:/tmp/post-scripts
+      - ./init-scripts:/tmp/init-scripts
       - ./docker:/config
     ports:
       - 8000:80
