@@ -6,10 +6,11 @@ PrestaShop Flashlight is fast: the PrestaShop installation wizard is run at buil
 
 ## QuickStart
 
-1. Obtain a tarball of the PrestaShop sources, `PrestaShop.tgz`
-2. `tar xzf PrestaShop.tgz` in project root
-3. Copy desired version of klaviyopsautomation module zip archive to `modules`
-4. docker compose up
+1. Acquire the prestashop sources in install them to `./PrestaShop` in the project root, 
+   following https://github.com/kamidzi-klaviyo-integrations/prestashop-flashlight/tree/xdebug-env/examples/xdebug-prestashop#requirements
+   *N.B.* - Set `PS_FLASHLIGHT_TAG=1.7.8.11`
+2. Copy desired version of klaviyopsautomation module zip archive to `modules`
+3. docker compose up
 
 
 ## Environment variables
