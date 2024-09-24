@@ -19,8 +19,8 @@ services:
       - ./modules:/ps-modules
       - ./PrestaShop:/var/www/html:rw
       - type: bind
-        source: ./modules/klaviyopsautomation
-        target: /var/www/html/modules/klaviyopsautomation
+        source: ./modules/klaviyops
+        target: /var/www/html/modules/klaviyops
       - ./post-scripts:/tmp/post-scripts
       - ./init-scripts:/tmp/init-scripts
       - ./docker:/config
