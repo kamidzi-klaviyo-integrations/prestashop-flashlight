@@ -11,13 +11,21 @@ trap 'rm -rf ${tmpdir}' EXIT TERM
 
 exec 3>&1
 
+archive="PrestaShop-${PS_FLASHLIGHT_TAG}.tgz"
+
 {
   exec 1>&2
-  docker create --name "$CONTAINER_NAME" "prestashop/prestashop-flashlight:$PS_FLASHLIGHT_TAG"
-  docker cp "$CONTAINER_NAME:/var/www/html" "${destdir}"
-  docker rm "$CONTAINER_NAME"
+  
+  # should verify actual checksums
+  if [ -r "$archive" ]; then
+    echo "$archive" already exists. Skipping download...
+    tmpdir='.'
+  else
+    docker create --name "$CONTAINER_NAME" "prestashop/prestashop-flashlight:$PS_FLASHLIGHT_TAG"
+    docker cp "$CONTAINER_NAME:/var/www/html" "${destdir}"
+    docker rm "$CONTAINER_NAME"
+  fi
 }
 
-archive="PrestaShop-${PS_FLASHLIGHT_TAG}.tgz"
 tar -C "$tmpdir" -czf "$archive" PrestaShop
 readlink -f "$archive" >&3
