@@ -6,8 +6,8 @@ PrestaShop Flashlight is fast: the PrestaShop installation wizard is run at buil
 
 ## QuickStart
 
-1. ./build-env.sh
-2. Copy desired version of klaviyopsautomation module zip archive to `modules`
+1. Copy desired version of klaviyopsautomation module zip archive to `modules`
+2. ./build-env.sh
 3. docker compose up
 
 
