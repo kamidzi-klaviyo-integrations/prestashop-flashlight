@@ -9,7 +9,7 @@ PrestaShop Flashlight is fast: the PrestaShop installation wizard is run at buil
 Following will get you setup with version 1.7.8.11, klaviyo module pre-installed.
 
 1. Copy desired version of klaviyops module zip archive (from https://addons.prestashop.com/en/newsletter-sms/49837-klaviyo.html) to `modules`
-2. ./build-env.sh
+2. ./build-env.sh -d
 
 
 ## Troubleshooting

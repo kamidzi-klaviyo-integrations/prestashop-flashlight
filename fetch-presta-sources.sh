@@ -16,7 +16,6 @@ archive="PrestaShop-${PS_FLASHLIGHT_TAG}.tgz"
   # should verify actual checksums
   if [ -r "$archive" ]; then
     echo "$archive" already exists. Skipping download...
-    tmpdir='.'
   else
     tmpdir=$(mktemp -d) || exit 1
     destdir="${tmpdir}/PrestaShop"
@@ -25,8 +24,10 @@ archive="PrestaShop-${PS_FLASHLIGHT_TAG}.tgz"
     docker create --name "$CONTAINER_NAME" "prestashop/prestashop-flashlight:$PS_FLASHLIGHT_TAG"
     docker cp "$CONTAINER_NAME:/var/www/html" "${destdir}"
     docker rm "$CONTAINER_NAME"
+    tar -C "$tmpdir" -czf "$archive" PrestaShop
   fi
 }
-
-tar -C "$tmpdir" -czf "$archive" PrestaShop
 readlink -f "$archive" >&3
+exec 3>&-
+
+
