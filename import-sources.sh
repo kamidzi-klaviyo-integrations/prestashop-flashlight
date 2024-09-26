@@ -29,7 +29,7 @@ purge_staging_dir_files(){
   for f in "$files"; do
     path="$staging_dir/$f"
     echo "Removing file $path" >&2
-    unlink "$path"
+    unlink "$path" || true
   done
 }
 
