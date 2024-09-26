@@ -2,7 +2,7 @@
 #
 # Build environment from scratch
 hash -r
-set -u
+set -eu
 
 PS_FLASHLIGHT_TAG=1.7.8.11
 
@@ -25,6 +25,8 @@ if [[ $ret != 0 ]]; then
     ./make-hashes.sh $PS_FLASHLIGHT_TAG PrestaShop >/dev/null
 fi
 
+# import the sources
+./import-sources.sh
 
 # Should do a check on the container tag against PS_FLASHLIGHT_TAG
 docker compose up "$@"
