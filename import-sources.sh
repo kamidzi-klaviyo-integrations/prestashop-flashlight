@@ -11,7 +11,7 @@ staging_dir="$(mktemp -d)"
 dest_dir=modules/klaviyops
 
 url="${1:-git@github.com:klaviyo/prestashop_klaviyo.git}"
-branch="${2:-master}"
+branch="$2"
 
 set -u
 
@@ -37,7 +37,13 @@ repo_name="${url##*/}" ; repo_name="${repo_name//.git/}"
 trap 'rm -rf "$staging_dir"' EXIT TERM
 
 
-git clone -b "$branch" "$url" "$staging_dir" >&2
+if [[ -z "$branch" ]]; then
+  git clone "$url" "$staging_dir" >&2
+else
+  echo "Cloning branch $branch" >&2
+  git clone -b "$branch" "$url" "$staging_dir" >&2
+fi
+
 # enumerate translation files
 excluded_file+=( $(find "$staging_dir/translations" -type f -iname '*_klaviyopsautomation.php') )
 
