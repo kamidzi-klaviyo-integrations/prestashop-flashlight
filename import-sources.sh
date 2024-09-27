@@ -3,6 +3,75 @@
 hash -r
 set -e
 
+BIN="${0%%*/}"
+
+# Function to display usage
+usage() {
+  declare -i ret
+  local ret=${1:-0}
+
+  if [[ $ret == 0 ]]; then
+    exec 3>&1
+  else
+    exec 3>&2
+  fi
+
+  cat <<EoF
+Usage: $BIN [options]
+Options:
+  -h, --help                    Show this help message
+  -b, --branch branchname       Specify a target branch
+  -u, --repo-url url            Specify url to sources repository
+  -v, --verbose                 Enable verbose mode
+EoF
+    exit $ret
+}
+
+
+options=hb:u:v
+longoptions=help,branch:,repo-url:,verbose
+
+# Parse options
+parsed=$(getopt -o $options --long $longoptions -- "$@")
+if [[ $? -ne 0 ]]; then
+    usage 2
+fi
+
+eval set -- "$parsed"
+
+# Initialize variables
+branch=""
+repo_url="git@github.com:klaviyo/prestashop_klaviyo.git"
+verbose=0
+
+# Process options
+while true; do
+    case "$1" in
+        -h|--help)
+            usage
+            ;;
+        -b|--branch)
+            branch="$2"
+            shift 2
+            ;;
+        -u|--repo-url)
+            repo_url="$2"
+            shift 2
+            ;;
+        -v|--verbose)
+            verbose=1
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage 1
+            ;;
+    esac
+done
+
 excluded_files=(
  klaviyopsautomation.php
 )
@@ -10,8 +79,6 @@ excluded_files=(
 staging_dir="$(mktemp -d)"
 dest_dir=modules/klaviyops
 
-url="${1:-git@github.com:klaviyo/prestashop_klaviyo.git}"
-branch="$2"
 
 set -u
 
@@ -33,15 +100,15 @@ purge_staging_dir_files(){
   done
 }
 
-repo_name="${url##*/}" ; repo_name="${repo_name//.git/}"
+repo_name="${repo_url##*/}" ; repo_name="${repo_name//.git/}"
 trap 'rm -rf "$staging_dir"' EXIT TERM
 
 
 if [[ -z "$branch" ]]; then
-  git clone "$url" "$staging_dir" >&2
+  git clone "$repo_url" "$staging_dir" >&2
 else
   echo "Cloning branch $branch" >&2
-  git clone -b "$branch" "$url" "$staging_dir" >&2
+  git clone -b "$branch" "$repo_url" "$staging_dir" >&2
 fi
 
 # enumerate translation files
