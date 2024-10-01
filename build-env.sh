@@ -2,7 +2,7 @@
 #
 # Build environment from scratch
 hash -r
-set -eu
+set -u
 
 PS_FLASHLIGHT_TAG=1.7.8.11
 
