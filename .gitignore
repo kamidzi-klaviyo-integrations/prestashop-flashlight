@@ -10,7 +10,7 @@ sonar-project.properties
 
 PrestaShop/
 prestashop/
-webservice-keys/
+webservice-keys/keys
 vendor/
 .prestashop-tags
 .prestashop-minor-tags
