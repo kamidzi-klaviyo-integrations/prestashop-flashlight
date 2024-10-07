@@ -20,7 +20,7 @@ filename="$(./fetch-presta-sources.sh $PS_FLASHLIGHT_TAG)"
 ./check-hashes.sh $PS_FLASHLIGHT_TAG 2>/dev/null
 ret=$?
 if [[ $ret != 0 ]]; then
-    [[ $ret == 1 ]] && { echo "Hash mismatch! Re-hashing archive contents...";}
+    [[ $ret == 1 ]] && { echo "Hash mismatch! Re-hashing archive contents for $filename...";}
     tar -xzf "$filename"
     ./make-hashes.sh $PS_FLASHLIGHT_TAG PrestaShop >/dev/null
 fi
