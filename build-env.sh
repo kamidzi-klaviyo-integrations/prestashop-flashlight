@@ -29,8 +29,8 @@ EoF
 }
 
 
-options=hb:v
-longoptions=help,branch:,verbose
+options=hb:u:v
+longoptions=help,branch:,repo-url:,verbose
 
 # Parse options
 parsed=$(getopt -o $options --long $longoptions -- "$@")
@@ -45,6 +45,7 @@ branch=""
 verbose=0
 
 # Process options
+opts_cmdline=""
 while true; do
     case "$1" in
         -h|--help)
@@ -53,6 +54,12 @@ while true; do
         -b|--branch)
             branch="$2"
             shift 2
+            opts_cmdline+=" --branch $branch"
+            ;;
+        -u|--repo-url)
+            repo_url="$2"
+            shift 2
+            opts_cmdline+=" --repo-url $repo_url"
             ;;
         -v|--verbose)
             verbose=1
@@ -60,6 +67,8 @@ while true; do
             ;;
         --)
             shift
+            # cosmetics
+            opts_cmdline="${opts_cmdline/ /}"
             break
             ;;
         *)
@@ -78,11 +87,7 @@ if [[ $ret != 0 ]]; then
 fi
 
 # import the sources
-if [[ ! -z "$branch" ]]; then
-  ./import-sources.sh --branch "$branch"
-else
-  ./import-sources.sh
-fi
+./import-sources.sh "$opts_cmdline"
 
 # Should do a check on the container tag against PS_FLASHLIGHT_TAG
 docker compose up "$@"
