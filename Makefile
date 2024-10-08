@@ -1,16 +1,22 @@
 depends := gnu-getopt
+depend_targets := install-deps
 
-.PHONY: install-deps up clean help
+.PHONY: install-deps up build-clean help
 
-help:
-	@LC_ALL=C $(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | grep -E -v -e '^[^[:alnum:]]' -e '^$@$$'
 
-install-deps:
+help:	## Shows this help
+	@@echo Available targets
+	@@echo -----------------
+	@@echo
+	@@sed -E -ne 's/^([^#[:space:]\\.][^ :]+): ?[^#]+(## )?(.*)$$/\1 "\3"/p' $(MAKEFILE_LIST) | \
+		xargs printf " %-32s %s\n"
+
+install-deps: ## Install dependencies
 	brew install ${depends}
 
-up:
+build-clean: ${depend_targets} ## Builds clean environment
+	./build-env.sh -d --force-recreate
+
+up: ${depend_targets} ## Bring up environment
 	./build-env.sh -d
 
-clean:
-	./build-env.sh -d --force-recreate
-	
