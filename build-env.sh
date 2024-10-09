@@ -20,17 +20,23 @@ usage() {
 
   cat <<EoF
 Usage: $BIN [options]
+
+Builds the environment containers and optionally imports live sources.
+
 Options:
   -h, --help                    Show this help message
-  -b, --branch branchname       Specify a target branch
+  -b, --branch branchname       Specify a target branch [master]
+  -F, --foreground              Build in foreground mode [false]
+  -f, --force-recreate          Force recreation of containers [false]
+  -u, --repo-url                Sources Repository url
   -v, --verbose                 Enable verbose mode
 EoF
     exit $ret
 }
 
 
-options=hb:u:v
-longoptions=help,branch:,repo-url:,verbose
+options=hb:Ffu:v
+longoptions=help,branch:,foreground,force-recreate,repo-url:,verbose
 
 # Parse options
 parsed=$(getopt -o $options --long $longoptions -- "$@")
@@ -42,11 +48,15 @@ eval set -- "$parsed"
 
 # Initialize variables
 branch=""
+foreground=false
+force_recreate=false
 verbose=0
 
 # Process options
-opts_cmdline=""
+import_opts_cmdline=""
+compose_opts_cmdline="-d"
 while true; do
+  echo $1
     case "$1" in
         -h|--help)
             usage
@@ -54,12 +64,22 @@ while true; do
         -b|--branch)
             branch="$2"
             shift 2
-            opts_cmdline+=" --branch $branch"
+            import_opts_cmdline+=" --branch $branch"
+            ;;
+        -F|--foreground)
+            foreground=true
+            shift 1
+            compose_opts_cmdline="${compose_opts_cmdline/-d/ }"
+            ;;
+        -f|--force-recreate)
+            force_recreate=true
+            shift 1
+            compose_opts_cmdline+=" --force-recreate"
             ;;
         -u|--repo-url)
             repo_url="$2"
             shift 2
-            opts_cmdline+=" --repo-url $repo_url"
+            import_opts_cmdline+=" --repo-url $repo_url"
             ;;
         -v|--verbose)
             verbose=1
@@ -68,7 +88,8 @@ while true; do
         --)
             shift
             # cosmetics
-            opts_cmdline="${opts_cmdline/ /}"
+            import_opts_cmdline="${import_opts_cmdline/ /}"
+            compose_opts_cmdline="${compose_opts_cmdline/ /}"
             break
             ;;
         *)
@@ -87,7 +108,7 @@ if [[ $ret != 0 ]]; then
 fi
 
 # import the sources
-./import-sources.sh "$opts_cmdline"
+./import-sources.sh "$import_opts_cmdline"
 
 # Should do a check on the container tag against PS_FLASHLIGHT_TAG
-docker compose up "$@"
+docker compose up "$compose_opts_cmdline"
